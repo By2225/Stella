@@ -7,7 +7,7 @@ import org.stellar.sdk.*;
 import org.stellar.sdk.requests.AccountsRequestBuilder;
 import org.stellar.sdk.responses.AccountResponse;
 import org.stellar.sdk.responses.SubmitTransactionResponse;
-import org.json.*;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -48,23 +48,15 @@ public class StellarMessenger {
     }
 
     @RequestMapping("/getAccountInfo")
-    public static JSONObject getAccountInfo(@RequestParam(value="accountId") String accountId) throws IOException {
+    public static String getAccountInfo(@RequestParam(value="accountId") String accountId) throws IOException {
         Server server = new Server("https://horizon-testnet.stellar.org");
         KeyPair pair = KeyPair.fromAccountId(accountId);
         AccountResponse account = server.accounts().account(pair); // throws IOException
         System.out.println("Balance for account " + pair.getAccountId());
         AccountResponse.Balance balance = account.getBalances()[0];
-        String response = "{Type: %s, Code: %s, Balance %s}".format(
-                balance.getAssetType(), balance.getAssetCode(), balance.getBalance());
-        System.out.println(response);
 
-        JSONObject jsonResponse = null;
-        try {
-            jsonResponse = new JSONObject(response);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return jsonResponse;
+        System.out.println(balance);
+        return balance.getBalance();
     }
 
     @RequestMapping("/send")

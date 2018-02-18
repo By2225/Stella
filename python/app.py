@@ -1,6 +1,7 @@
 #Python libraries that we need to import for our bot
 #https://www.twilio.com/blog/2017/12/facebook-messenger-bot-python.html
 import random
+import requests
 from flask import Flask, request
 from pymessenger.bot import Bot
 
@@ -8,9 +9,14 @@ app = Flask(__name__)
 ACCESS_TOKEN = 'ACCESS_TOKEN'
 VERIFY_TOKEN = 'VERIFY_TOKEN'
 bot = Bot(ACCESS_TOKEN)
+app.url_map.strict_slashes = False
+
+@app.route("/", methods=['GET', 'POST'])
+def welcome():
+    return "You have connected to the Facebook Messenger Bot"
 
 #We will receive messages that Facebook sends our bot at this endpoint 
-@app.route("/", methods=['GET', 'POST'])
+@app.route("/receive_msg/", methods=['GET', 'POST'])
 def receive_message():
     if request.method == 'GET':
         """Before allowing people to message your bot, Facebook has implemented a verify token
@@ -37,6 +43,17 @@ def receive_message():
                     send_message(recipient_id, response_sent_nontext)
     return "Message Processed"
 
+@app.route("/send/<secret_seed>/<dest_acct_id>/<amount>/", methods=['GET', 'POST'])
+def send_payment(secret_seed, dest_acct_id, amount):
+    root_url = "http://d1663146.ngrok.io/send/"
+    req = requests.post(root_url, {"secretSeed": secret_seed, "destAcctId":dest_acct_id, "amount": amount })
+    return req.text
+
+@app.route("/balance/<accountId>", methods=['GET', 'POST'])
+def get_balance(accountId):
+    root_url = "http://d1663146.ngrok.io/getAccountInfo/"
+    req = requests.post(root_url, {"accountId": accountId })
+    return req.text
 
 def verify_fb_token(token_sent):
     #take token sent by facebook and verify it matches the verify token you sent
