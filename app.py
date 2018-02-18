@@ -88,10 +88,11 @@ def send_payment(tokens):
         print("Invalid payment request - not enough arguments")
         return
     dest_acct_id_ = tokens[1]
+    print(dest_acct_id)
     amount = tokens[2]
     secret_seed = tokens[3]
     root_url = "http://d1663146.ngrok.io/send/"
-    req = requests.post(root_url, {"secretSeed": secret_seed, "destAcctId":dest_acct_id, "amount": amount })
+    req = requests.post(root_url, {"secretSeed": secret_seed, "destAcctId": dest_acct_id, "amount": amount })
     return req.text
 
 if __name__ == "__main__":
