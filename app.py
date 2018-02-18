@@ -31,7 +31,7 @@ def receive_message():
                 #Facebook Messenger ID for user so we know where to send response back to
                 recipient_id = message['sender']['id']
                 print(message)
-                 message_text = message['message'].get('text')
+                message_text = message['message'].get('text')
                 if message_text:
                     tokens = message_text.split()
                     if (tokens[0].upper() == "SEND"):
