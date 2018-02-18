@@ -43,13 +43,13 @@ def receive_message():
                     send_message(recipient_id, response_sent_nontext)
     return "Message Processed"
 
-@app.route("/send/<secret_seed>/<dest_acct_id>/<amount>/", methods=['GET', 'POST'])
+@app.route("/send/<secret_seed>/<dest_acct_id>/<amount>/", methods=['POST'])
 def send_payment(secret_seed, dest_acct_id, amount):
     root_url = "http://d1663146.ngrok.io/send/"
     req = requests.post(root_url, {"secretSeed": secret_seed, "destAcctId":dest_acct_id, "amount": amount })
     return req.text
 
-@app.route("/balance/<accountId>", methods=['GET', 'POST'])
+@app.route("/balance/<accountId>/", methods=['POST'])
 def get_balance(accountId):
     root_url = "http://d1663146.ngrok.io/getBalance/"
     req = requests.post(root_url, {"accountId": accountId })
@@ -61,6 +61,21 @@ def verify_fb_token(token_sent):
     if token_sent == VERIFY_TOKEN:
         return request.args.get("hub.challenge")
     return 'Invalid verification token'
+
+@app.route("/register_testnet_acct/<accountId>/", methods=['POST'])
+def register_testnet_acct(accountId):
+    root_url = "http://d1663146.ngrok.io/registerTestNetAccount/"
+    req = requests.post(root_url, {"accountId": accountId })
+    return req.text
+
+@app.route('/create_key_pair/', methods=['GET', 'POST'])
+def create_key_pair():
+    root_url = "http://d1663146.ngrok.io/createKeyPair/"
+    req = requests.post(root_url)
+    return req.text
+
+
+
 
 
 #chooses a random message to send to the user
