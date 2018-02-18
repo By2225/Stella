@@ -35,8 +35,12 @@ def receive_message():
                 if message_text:
                     tokens = message_text.split(" ")
                     if (tokens[0].upper() == "SEND"):
-                        send_payment(tokens)
+                        payment_resp = send_payment(tokens)
                         print("Payment Sent")
+                        print("Payment Response: ", payment_resp)
+                        balance_resp = get_balance(tokens[4])
+                        print("Balance Response: ", balance_resp)
+                        send_message(recipient_id, balance_resp)                      
                     else: 
                         sender_info = parse_fake_message(message_text)
                         if sender_info:
@@ -83,8 +87,13 @@ def send_message(recipient_id, response):
     bot.send_text_message(recipient_id, response)
     return "success"
 
+def get_balance(accountId):
+    root_url = "http://d1663146.ngrok.io/getBalance/"
+    req = requests.post(root_url, {"accountId": accountId })
+    return req.text
+
 def send_payment(tokens):
-    if (len(tokens) < 4):
+    if (len(tokens) < 5):
         print("Invalid payment request - not enough arguments")
         return
     dest_acct_id = tokens[1]
