@@ -38,7 +38,7 @@ def receive_message():
                         send_payment(tokens)
                         print("Payment Sent")
                     else: 
-                        sender_info = parse_fake_message(message['message'].get('text'))
+                        sender_info = parse_fake_message(message_text)
                         if sender_info:
                             response_sent_text = fake_message(sender_info[0], sender_info[1])
                             send_message(recipient_id, response_sent_text)
