@@ -7,7 +7,7 @@ import org.stellar.sdk.*;
 import org.stellar.sdk.requests.AccountsRequestBuilder;
 import org.stellar.sdk.responses.AccountResponse;
 import org.stellar.sdk.responses.SubmitTransactionResponse;
-
+import org.json.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -41,16 +41,19 @@ public class StellarMessenger {
         return responseBody;
     }
 
-    @RequestMapping("/getAccountInfo")
-    public static String getAccountInfo(@RequestParam(value="accountId") String accountId) throws IOException {
+    @RequestMapping("/getBalance")
+    public static String getBalance(@RequestParam(value="accountId") String accountId) throws IOException {
         Server server = new Server("https://horizon-testnet.stellar.org");
         KeyPair pair = KeyPair.fromAccountId(accountId);
         AccountResponse account = server.accounts().account(pair); // throws IOException
-        System.out.println("Balance for account " + pair.getAccountId());
         AccountResponse.Balance balance = account.getBalances()[0];
-
-        System.out.println(balance);
-        return balance.getBalance();
+        String response = "Account: %s Stellar Balance: %s".format(pair.getAccountId(),
+                balance.getBalance());
+        JSONObject resp = new JSONObject();
+        resp.put("account", pair.getAccountId());
+        resp.put("balance", balance.getBalance());
+        System.out.println(response);
+        return resp.toString();
     }
 
     @RequestMapping("/send")
@@ -75,7 +78,7 @@ public class StellarMessenger {
         Transaction.Builder transactionBuilder = new Transaction.Builder(sourceAccount);
         // AssetTypeNative represents the Stellar Lumens Native asset
         PaymentOperation payment = new PaymentOperation.Builder(
-                destination, new AssetTypeNative(), "10").build();
+                destination, new AssetTypeNative(), amount).build();
 
         // Add metadata to transaction (optional)
         transactionBuilder.addMemo(Memo.text("Test transaction"));
@@ -93,14 +96,12 @@ public class StellarMessenger {
                 System.out.println("Success!");
                 System.out.println(response);
                 break;
-
             } catch (Exception e) {
                 System.out.println("Something went wrong! Retrying...");
                 System.out.println(e.getMessage());
                 // TODO: Check for actual response from Horizon server. Resubmit if no reponse
             }
         }
-
         return response;
     }
 }

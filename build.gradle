@@ -22,7 +22,6 @@ repositories {
 	mavenCentral()
 }
 
-
 dependencies {
 	compile('org.json:json')
 	compile fileTree(dir: 'stellar-sdk', include: '*.jar')

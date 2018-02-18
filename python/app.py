@@ -51,7 +51,7 @@ def send_payment(secret_seed, dest_acct_id, amount):
 
 @app.route("/balance/<accountId>", methods=['GET', 'POST'])
 def get_balance(accountId):
-    root_url = "http://d1663146.ngrok.io/getAccountInfo/"
+    root_url = "http://d1663146.ngrok.io/getBalance/"
     req = requests.post(root_url, {"accountId": accountId })
     return req.text
 
