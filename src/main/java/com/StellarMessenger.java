@@ -20,12 +20,6 @@ public class StellarMessenger {
         return "You have successfully connected to the Stellar Facebook Messenger API!";
     }
 
-    @RequestMapping("/testSend")
-    public Message greeting(@RequestParam(value="name", defaultValue="Default message")
-                            String name, @RequestParam(value="amount", defaultValue="0") String amount) {
-        return new Message(name, amount );
-    }
-
     @RequestMapping("/createKeyPair")
     public static KeyPair createKeyPair(){
         // Generates seed for creating a key pair
