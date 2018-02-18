@@ -87,7 +87,7 @@ def send_payment(tokens):
     if (len(tokens) < 4):
         print("Invalid payment request - not enough arguments")
         return
-    dest_acct_id_ = tokens[1]
+    dest_acct_id = tokens[1]
     print(dest_acct_id)
     amount = tokens[2]
     secret_seed = tokens[3]
