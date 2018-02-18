@@ -33,7 +33,7 @@ def receive_message():
                 print(message)
                 message_text = message['message'].get('text')
                 if message_text:
-                    tokens = message_text.split()
+                    tokens = message_text.split(" ")
                     if (tokens[0].upper() == "SEND"):
                         send_payment(tokens)
                         print("Payment Sent")
