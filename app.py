@@ -88,7 +88,7 @@ def send_message(recipient_id, response):
     return "success"
 
 def get_balance(accountId):
-    root_url = "http://d1663146.ngrok.io/getBalance/"
+    root_url = "http://d8008429.ngrok.io/getBalance/"
     req = requests.post(root_url, {"accountId": accountId })
     return req.text
 
@@ -100,7 +100,7 @@ def send_payment(tokens):
     print(dest_acct_id)
     amount = tokens[2]
     secret_seed = tokens[3]
-    root_url = "http://d1663146.ngrok.io/send/"
+    root_url = "http://d8008429.ngrok.io/send/"
     req = requests.post(root_url, {"secretSeed": secret_seed, "destAcctId": dest_acct_id, "amount": amount })
     return req.text
 
