@@ -1,1 +1,2 @@
-web: java -jar build/libs/stellar-api.jar
+web: java -Dserver.port=$PORT $JAVA_OPTS -jar build/libs/stellar-api.jar
+
