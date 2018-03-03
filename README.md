@@ -1,2 +1,1 @@
-# Stella
-A Facebook Messenger bot for sending Stellar Lumens
+#H1 Stella: A Facebook Messenger bot for sending Stellar Lumens
