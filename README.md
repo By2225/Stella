@@ -11,6 +11,12 @@ Interact with the Stellar network through Facebook Messenger Main features
   * Create and verify new account
   
 # Sketch view: 
+Live Transaction shown below:
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/28996332/36932074-cc0b4ec2-1e91-11e8-9e97-3b19639cce2e.JPG">
+  <img src="https://user-images.githubusercontent.com/28996332/36932073-cbffe3a2-1e91-11e8-9d26-ef75a9aca66e.JPG">
+</p>
 
   
 # How we built it:
