@@ -1,7 +1,7 @@
 import random
 import requests
 import os
-from flask import Flask, request
+from flask import Flask, request, render_template
 from pymessenger.bot import Bot
 
 app = Flask(__name__)
@@ -54,6 +54,9 @@ def receive_message():
                     send_message(recipient_id, response_sent_nontext)
     return "Message Processed"
 
+def send_lumens_webview():
+    message = "Hello World"
+    return render_template('index.html', message=message)
 
 def verify_fb_token(token_sent):
     #take token sent by facebook and verify it matches the verify token you sent
@@ -71,7 +74,7 @@ def parse_sent_message(tokens):
     accountId = tokens[1]
     amount = tokens[2]
     return (accountId, amount,)
-  
+
 #if the user sends something other than a text message
 def get_invalid_message():
     return "Invalid message. Please only send lumens"
@@ -86,6 +89,11 @@ def send_message(recipient_id, response):
 def get_balance(accountId):
     req = requests.post(STELLAR_API_URL + "getBalance", {"accountId": accountId })
     return req.text
+
+@app.route("/send_lumens", methods=['GET', 'POST'])
+def send_lumens():
+    message = "Hello, World"
+    return render_template('index.html', message=message)
 
 def send_payment(tokens):
     if (len(tokens) < 5):
