@@ -11,35 +11,38 @@ VERIFY_TOKEN = os.environ['VERIFY_TOKEN']
 STELLAR_API_URL = "https://stellarapi.herokuapp.com/"
 bot = Bot(ACCESS_TOKEN)
 
-# We will receive messages that Facebook sends our bot at this endpoint
+# We will receive messages that Facebook sends Stella at this endpoint
 @app.route("/", methods=['GET', 'POST'])
 def receive_message():
     if request.method == 'GET':
-        """Before allowing people to message your bot, Facebook has implemented a verify token
-        that confirms all requests that your bot receives came from Facebook."""
+        """Before allowing people to message Stella, Facebook has implemented a verify token
+        that confirms all requests that Stella receives came from Facebook."""
         token_sent = request.args.get("hub.verify_token")
         return verify_fb_token(token_sent)
+
     #if the request was not get, it must be POST and we can just proceed with sending a message back to user
     else:
-        # get whatever message a user sent the bot
        output = request.get_json()
        for event in output['entry']:
           messaging = event['messaging']
           for message in messaging:
             if message.get('message'):
-                #Facebook Messenger ID for user so we know where to send response back to
+                #Facebook Messenger ID for user so Stella knows where to send response back to
                 recipient_id = message['sender']['id']
-                print(message)
                 message_text = message['message'].get('text')
                 if message_text:
+                    """Split parts of the message into tokens.
+
+                    tokens 0 - 'Send'
+                    tokens 1 - Public key of receipient
+                    tokens 2 - Amount of XLM to send
+                    tokens 3 - Private key of sender
+                    """
                     tokens = message_text.split(" ")
                     if (tokens[0].upper() == "SEND"):
                         payment_resp = send_payment(tokens)
-                        print("Payment Sent")
-                        print("Payment Response: ", payment_resp)
-                        balance_resp = get_balance(tokens[4])
-                        print("Balance Response: ", balance_resp)
                         response_sent_text = sent_message(tokens[2], tokens[3])
+                        remaining_balance = get_balance(tokens[3])
                         send_message(recipient_id, response_sent_text)
                     else:
                         sender_info = parse_sent_message(message_text)
@@ -48,15 +51,11 @@ def receive_message():
                                                  "Please specify the keyword SEND, an amount, recipient, " \
                                                  "and source address."
                             send_message(recipient_id, response_sent_text)
-                #if user sends us a GIF, photo,video, or any other non-text item
+                #if user sends Stella a GIF, photo,video, or any other non-text item
                 if message['message'].get('attachments'):
                     response_sent_nontext = get_invalid_message()
                     send_message(recipient_id, response_sent_nontext)
     return "Message Processed"
-
-def send_lumens_webview():
-    message = "Hello World"
-    return render_template('index.html', message=message)
 
 def verify_fb_token(token_sent):
     #take token sent by facebook and verify it matches the verify token you sent
@@ -82,12 +81,11 @@ def get_invalid_message():
 #uses PyMessenger to send response to user
 def send_message(recipient_id, response):
     #sends user the text message provided via input response parameter
-    print(type(recipient_id))
     bot.send_text_message(recipient_id, response)
     return "success"
 
-def get_balance(accountId):
-    req = requests.post(STELLAR_API_URL + "getBalance", {"accountId": accountId })
+ def get_balance(secretSeed):
+    req = requests.post(STELLAR_API_URL + "getBalance", {"secretSeed": secretSeed })
     return req.text
 
 @app.route("/send_lumens", methods=['GET', 'POST'])
@@ -96,11 +94,9 @@ def send_lumens():
     return render_template('index.html', message=message)
 
 def send_payment(tokens):
-    if (len(tokens) < 5):
-        print("Invalid payment request - not enough arguments")
-        return
+    if (len(tokens) < 4):
+        return "Invalid payment request - not enough arguments"
     dest_acct_id = tokens[1]
-    print(dest_acct_id)
     amount = tokens[2]
     secret_seed = tokens[3]
     req = requests.post(STELLAR_API_URL+ "send", {"secretSeed": secret_seed, "destAcctId": dest_acct_id, "amount": amount })
