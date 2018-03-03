@@ -53,3 +53,7 @@ The application is built using two web microservices:
 * Better integrate Python and Java microservices
 * Send output message to receiver for payment confirmation
 * Feature for displaying recent transaction history
+
+# Award:
+Best Open Source Contribution Project at Columbia University DevFest Hackathon
+Check out our hack [HERE](https://devpost.com/software/stellarapp-hc0jby)
