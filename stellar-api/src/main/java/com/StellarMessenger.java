@@ -42,9 +42,9 @@ public class StellarMessenger {
     }
 
     @RequestMapping("/getBalance")
-    public static String getBalance(@RequestParam(value="accountId") String accountId) throws IOException {
+    public static String getBalance(@RequestParam(value="secretSeed") String secretSeed) throws IOException {
         Server server = new Server("https://horizon-testnet.stellar.org");
-        KeyPair pair = KeyPair.fromAccountId(accountId);
+        KeyPair pair = KeyPair.fromSecretSeed(secretSeed);
         AccountResponse account = server.accounts().account(pair); // throws IOException
         AccountResponse.Balance balance = account.getBalances()[0];
         String response = "Account: %s Stellar Balance: %s".format(pair.getAccountId(),
