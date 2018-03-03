@@ -1,4 +1,3 @@
-#Python libraries that we need to import for our bot
 import random
 import requests
 import os
@@ -9,10 +8,10 @@ app = Flask(__name__)
 
 ACCESS_TOKEN = os.environ['ACCESS_TOKEN']
 VERIFY_TOKEN = os.environ['VERIFY_TOKEN']
-
+STELLAR_API_URL = "https://stellarapi.herokuapp.com/"
 bot = Bot(ACCESS_TOKEN)
 
-#We will receive messages that Facebook sends our bot at this endpoint 
+# We will receive messages that Facebook sends our bot at this endpoint
 @app.route("/", methods=['GET', 'POST'])
 def receive_message():
     if request.method == 'GET':
@@ -41,11 +40,9 @@ def receive_message():
                         balance_resp = get_balance(tokens[4])
                         print("Balance Response: ", balance_resp)
                         send_message(recipient_id, balance_resp)                      
-                    else: 
-                        sender_info = parse_fake_message(message_text)
-                        if sender_info:
-                            response_sent_text = fake_message(sender_info[0], sender_info[1])
-                            send_message(recipient_id, response_sent_text)
+                    else:
+                        response_sent_text = get_message()
+                        send_message(recipient_id, response_sent_text)
                 #if user sends us a GIF, photo,video, or any other non-text item
                 if message['message'].get('attachments'):
                     response_sent_nontext = get_message()
@@ -59,18 +56,6 @@ def verify_fb_token(token_sent):
     if token_sent == VERIFY_TOKEN:
         return request.args.get("hub.challenge")
     return 'Invalid verification token'
-
-def fake_message(amount, name):
-    return "Success! You just sent {} XLM to {}".format(amount, name)
-
-def parse_fake_message(tokens):
-    print(message)
-    if (len(tokens) < 3):
-        return  
-    accountId = tokens[1]
-    amount = tokens[2]
-    return (accountId, amount,)
-
 
 #chooses a random message to send to the user
 def get_message():
@@ -88,8 +73,7 @@ def send_message(recipient_id, response):
     return "success"
 
 def get_balance(accountId):
-    root_url = "http://d8008429.ngrok.io/getBalance/"
-    req = requests.post(root_url, {"accountId": accountId })
+    req = requests.post(STELLAR_API_URL, {"accountId": accountId })
     return req.text
 
 def send_payment(tokens):
@@ -100,8 +84,7 @@ def send_payment(tokens):
     print(dest_acct_id)
     amount = tokens[2]
     secret_seed = tokens[3]
-    root_url = "http://d8008429.ngrok.io/send/"
-    req = requests.post(root_url, {"secretSeed": secret_seed, "destAcctId": dest_acct_id, "amount": amount })
+    req = requests.post(STELLAR_API_URL, {"secretSeed": secret_seed, "destAcctId": dest_acct_id, "amount": amount })
     return req.text
 
 if __name__ == "__main__":
