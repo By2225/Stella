@@ -22,6 +22,17 @@ repositories {
 	mavenCentral()
 }
 
+task stage(dependsOn: ['build', 'clean'])
+
+build.mustRunAfter clean
+
+task copyToLib(type: Copy) {
+    into "$buildDir/lib"
+    from(configurations.compile)
+}
+
+stage.dependsOn(copyToLib)
+
 dependencies {
 	compile('org.json:json')
 	compile fileTree(dir: 'stellar-sdk', include: '*.jar')
