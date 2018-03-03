@@ -39,11 +39,14 @@ def receive_message():
                         print("Payment Response: ", payment_resp)
                         balance_resp = get_balance(tokens[4])
                         print("Balance Response: ", balance_resp)
-                        send_message(recipient_id, balance_resp)
+                        response_sent_text = sent_message(tokens[2], tokens[3])
+                        send_message(recipient_id, response_sent_text)
                     else:
                         sender_info = parse_sent_message(message_text)
                         if sender_info:
-                            response_sent_text = sent_message(sender_info[0], sender_info[1])
+                            response_sent_text = "My name is Stella. I can help you send Stellar Lumens. " \
+                                                 "Please specify the keyword SEND, an amount, recipient, " \
+                                                 "and source address."
                             send_message(recipient_id, response_sent_text)
                 #if user sends us a GIF, photo,video, or any other non-text item
                 if message['message'].get('attachments'):
@@ -63,7 +66,6 @@ def sent_message(amount, name):
     return "Success! You just sent {} XLM to {}".format(amount, name)
 
 def parse_sent_message(tokens):
-    print(message)
     if (len(tokens) < 3):
         return
     accountId = tokens[1]
@@ -82,7 +84,7 @@ def send_message(recipient_id, response):
     return "success"
 
 def get_balance(accountId):
-    req = requests.post(STELLAR_API_URL, {"accountId": accountId })
+    req = requests.post(STELLAR_API_URL + "getBalance", {"accountId": accountId })
     return req.text
 
 def send_payment(tokens):
@@ -93,7 +95,7 @@ def send_payment(tokens):
     print(dest_acct_id)
     amount = tokens[2]
     secret_seed = tokens[3]
-    req = requests.post(STELLAR_API_URL, {"secretSeed": secret_seed, "destAcctId": dest_acct_id, "amount": amount })
+    req = requests.post(STELLAR_API_URL+ "send", {"secretSeed": secret_seed, "destAcctId": dest_acct_id, "amount": amount })
     return req.text
 
 if __name__ == "__main__":
