@@ -1,4 +1,3 @@
-#Python libraries that we need to import for our bot
 import random
 import requests
 import os
@@ -9,10 +8,10 @@ app = Flask(__name__)
 
 ACCESS_TOKEN = os.environ['ACCESS_TOKEN']
 VERIFY_TOKEN = os.environ['VERIFY_TOKEN']
-
+STELLAR_API_URL = "https://stellarapi.herokuapp.com/"
 bot = Bot(ACCESS_TOKEN)
 
-#We will receive messages that Facebook sends our bot at this endpoint
+# We will receive messages that Facebook sends our bot at this endpoint
 @app.route("/", methods=['GET', 'POST'])
 def receive_message():
     if request.method == 'GET':
@@ -48,7 +47,7 @@ def receive_message():
                             send_message(recipient_id, response_sent_text)
                 #if user sends us a GIF, photo,video, or any other non-text item
                 if message['message'].get('attachments'):
-                    response_sent_nontext = get_message()
+                    response_sent_nontext = get_invalid_message()
                     send_message(recipient_id, response_sent_nontext)
     return "Message Processed"
 
@@ -70,10 +69,9 @@ def parse_sent_message(tokens):
     accountId = tokens[1]
     amount = tokens[2]
     return (accountId, amount,)
-
-
-#chooses a random message to send to the user
-def get_message():
+  
+#if the user sends something other than a text message
+def get_invalid_message():
     return "Invalid message. Please only send lumens"
 
 #uses PyMessenger to send response to user
@@ -84,8 +82,7 @@ def send_message(recipient_id, response):
     return "success"
 
 def get_balance(accountId):
-    root_url = "http://d8008429.ngrok.io/getBalance/"
-    req = requests.post(root_url, {"accountId": accountId })
+    req = requests.post(STELLAR_API_URL, {"accountId": accountId })
     return req.text
 
 def send_payment(tokens):
@@ -96,8 +93,7 @@ def send_payment(tokens):
     print(dest_acct_id)
     amount = tokens[2]
     secret_seed = tokens[3]
-    root_url = "http://d8008429.ngrok.io/send/"
-    req = requests.post(root_url, {"secretSeed": secret_seed, "destAcctId": dest_acct_id, "amount": amount })
+    req = requests.post(STELLAR_API_URL, {"secretSeed": secret_seed, "destAcctId": dest_acct_id, "amount": amount })
     return req.text
 
 if __name__ == "__main__":
