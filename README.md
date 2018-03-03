@@ -10,6 +10,9 @@ Interact with the Stellar network through Facebook Messenger Main features
   * Check account balance
   * Create and verify new account
   
+# Sketch view: 
+
+  
 # How we built it:
 The application is built using two web microservices:
   1. Python Flask microservice: interfaces with Facebook Messenger and directly processes user messages.
