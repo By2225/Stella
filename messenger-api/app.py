@@ -12,12 +12,12 @@ VERIFY_TOKEN = os.environ['VERIFY_TOKEN']
 
 bot = Bot(ACCESS_TOKEN)
 
-#We will receive messages that Facebook sends our bot at this endpoint 
+#We will receive messages that Facebook sends our bot at this endpoint
 @app.route("/", methods=['GET', 'POST'])
 def receive_message():
     if request.method == 'GET':
         """Before allowing people to message your bot, Facebook has implemented a verify token
-        that confirms all requests that your bot receives came from Facebook.""" 
+        that confirms all requests that your bot receives came from Facebook."""
         token_sent = request.args.get("hub.verify_token")
         return verify_fb_token(token_sent)
     #if the request was not get, it must be POST and we can just proceed with sending a message back to user
@@ -40,11 +40,11 @@ def receive_message():
                         print("Payment Response: ", payment_resp)
                         balance_resp = get_balance(tokens[4])
                         print("Balance Response: ", balance_resp)
-                        send_message(recipient_id, balance_resp)                      
-                    else: 
-                        sender_info = parse_fake_message(message_text)
+                        send_message(recipient_id, balance_resp)
+                    else:
+                        sender_info = parse_sent_message(message_text)
                         if sender_info:
-                            response_sent_text = fake_message(sender_info[0], sender_info[1])
+                            response_sent_text = sent_message(sender_info[0], sender_info[1])
                             send_message(recipient_id, response_sent_text)
                 #if user sends us a GIF, photo,video, or any other non-text item
                 if message['message'].get('attachments'):
@@ -55,18 +55,18 @@ def receive_message():
 
 def verify_fb_token(token_sent):
     #take token sent by facebook and verify it matches the verify token you sent
-    #if they match, allow the request, else return an error 
+    #if they match, allow the request, else return an error
     if token_sent == VERIFY_TOKEN:
         return request.args.get("hub.challenge")
     return 'Invalid verification token'
 
-def fake_message(amount, name):
+def sent_message(amount, name):
     return "Success! You just sent {} XLM to {}".format(amount, name)
 
-def parse_fake_message(tokens):
+def parse_sent_message(tokens):
     print(message)
     if (len(tokens) < 3):
-        return  
+        return
     accountId = tokens[1]
     amount = tokens[2]
     return (accountId, amount,)
@@ -74,13 +74,9 @@ def parse_fake_message(tokens):
 
 #chooses a random message to send to the user
 def get_message():
-    sample_responses = ["Will we finish?", "Stellar is cool", "XML!", "Account Balance: 0 XLM :)"]
-    # return selected item to the user
-    return random.choice(sample_responses)
+    return "Invalid message. Please only send lumens"
 
 #uses PyMessenger to send response to user
-
-
 def send_message(recipient_id, response):
     #sends user the text message provided via input response parameter
     print(type(recipient_id))
