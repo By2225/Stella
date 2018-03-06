@@ -40,6 +40,7 @@ def receive_message():
                     """
                     tokens = message_text.split(" ")
                     if (tokens[0].upper() == "SEND"):
+                        # Check if correct number of items has been specified
                         payment_resp = send_payment(tokens)
                         response_sent_text = sent_message(tokens[2], tokens[3])
                         remaining_balance = get_balance(tokens[3])
@@ -84,14 +85,13 @@ def send_message(recipient_id, response):
     bot.send_text_message(recipient_id, response)
     return "success"
 
- def get_balance(secretSeed):
+def get_balance(secretSeed):
     req = requests.post(STELLAR_API_URL + "getBalance", {"secretSeed": secretSeed })
     return req.text
 
 @app.route("/send_lumens", methods=['GET', 'POST'])
 def send_lumens():
-    message = "Hello, World"
-    return render_template('index.html', message=message)
+    return render_template('index.html')
 
 def send_payment(tokens):
     if (len(tokens) < 4):

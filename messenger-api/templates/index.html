@@ -1,35 +1,83 @@
-<html>
-  <head>
-    <title> Stellar Webview </title>
-  </head>
+<!DOCTYPE html>
+<html lang="en">
 
-  <body>
-    <h1> Welcome to the Stella - a Facebook Messenger Bot </h1>
-    <h2>  {{message}}</h2>
+<head>
+
+    <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta charset="utf-8">
+    <title> Send Lumens </title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Baloo" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet">
 
 
-    <script>
-    // Add the Messenger
-    (function(d, s, id){
-      var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) {return;}
-      js = d.createElement(s); js.id = id;
-      js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
-      fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'Messenger'));
 
-    window.extAsyncInit = function() {
-      // the Messenger Extensions JS SDK is done loading
-    };
-  
-      MessengerExtensions.requestCloseBrowser(function success() {
-      // webview closed
-      }, function error(err) {
-      // an error occurred
-      console.log(err);
-    });
-    </script>
+    <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="../static/css/normalize.css">
+    <link rel="stylesheet" href="../static/css/skeleton.css">
+    <link rel="stylesheet" href="../static/css/stellaStyle.css">
 
-  </body>
+    <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="icon" type="image/png" href="../static/css/images/favicon.png">
+
+    <!-- JavaScript - JQuery & AJAX
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="../static/js/script.js"></script>
+
+</head>
+
+<body class="bg">
+
+    <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+    <div class="container">
+        <div class="row">
+            <div class="twelve columns">
+                <img class="logo" src="../static/css/images/Logotype.png">
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <form>
+            <div class="row">
+                <div class="twelve columns">
+                    <label for="amount">Who</label>
+                    <p>Enter the recipients public address</p>
+                    <input class="u-full-width" name="destAcctId" type="text" placeholder="SB4OFYTPJEOIJ57W2AT9XPVWOA4N6OBJW2KFE5SD344I4K5OC37DZ6Y" id="recipientAddress">
+                    <label for="amount">Private Key</label>
+                    <p>Enter the private key</p>
+                    <input class="u-full-width" name="secretSeed" type="text" placeholder="NDMF2AE4KHAMSD9M662NECJ6WV57W6M5C3IZPC5YPZQBZWSVTTSTBS" id="recipientAddress">
+                    <label for="amount">Amount</label>
+                    <p>Enter the amount you want to send</p>
+                    <input class="u-full-width" name="amount" type="number" placeholder="How much do you want to send?" id="recipientAddress">
+                    <!--- submit button --->
+                    <button class="button-stella" style="margin-top: 10%;" type="submit" value="Send Lumens">Send Lumens &nbsp; <img style="width: 4%;"src="../static/css/images/send.png">
+</button>
+
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+
+<script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
 
 </html>

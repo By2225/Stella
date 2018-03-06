@@ -3,6 +3,8 @@ package com;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.stellar.sdk.*;
 import org.stellar.sdk.requests.AccountsRequestBuilder;
 import org.stellar.sdk.responses.AccountResponse;
@@ -13,8 +15,10 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Scanner;
 
+@CrossOrigin
 @RestController
 public class StellarMessenger {
+
     @RequestMapping("/")
     public String welcome(){
         return "You have successfully connected to the Stellar Facebook Messenger API!";
