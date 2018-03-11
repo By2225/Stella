@@ -1,3 +1,5 @@
+/* index styles and general CSS */
+
 .logo {
     width: 50%;
     margin-top: 20%;
@@ -8,7 +10,7 @@
     font-family: 'baloo';
 }
 
-label{
+label {
    font-family: 'baloo';
    font-size: 1.7rem;
    color: #3B3B3B !important;
@@ -20,10 +22,11 @@ p {
     color: #b1b1b1;
 }
 
-body {
+.bg {
     background-image: url('images/bg.png');
     background-repeat: no-repeat;
     background-position: center;
+    background-size: cover;
 }
 
 .button-stella {
@@ -37,6 +40,41 @@ body {
     font-size: 1.5rem !important;
     cursor: pointer;
     text-align: center;
+}
+
+/* balance page styles */
+
+.balanceBG {
+    background-image: url('images/balanceBG.png');
+    background-position: relative;
+    background-repeat: no-repeat;
+    width: 100%;
+}
+
+.keyBG {
+    margin-top: 30%;
+    background: linear-gradient(#44E5DB, #21C6B5);
+}
+
+.accountBalance {
+    font-family: 'baloo';
+    text-align: center;
+    width: auto;
+    margin-top: 30%;   
+}
+
+.keyHeader {
+    color: #E7FFFD;
+    margin-top: 10%;
+    font-family: 'baloo';
+}
+
+.keyText {
+    font-family: 'roboto';
+    font-weight: 100;
+    font-size: 1.2rem;
+    color: #ffffff;
+    overflow: scroll;
 }
 
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
