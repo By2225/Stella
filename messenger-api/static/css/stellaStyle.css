@@ -77,6 +77,19 @@ p {
     overflow: scroll;
 }
 
+/* transaction error */
+
+.errorBG {
+    background-image: url(images/balanceBG.png);
+}
+
+.errorText {
+    margin-top: 20%;
+    margin-bottom: 20%;
+    font-family: 'baloo';
+    color: #626262;
+}
+
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
   color: #b1b1b1;
 }
