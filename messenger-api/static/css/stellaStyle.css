@@ -58,9 +58,9 @@ p {
 
 .accountBalance {
     font-family: 'baloo';
-    text-align: center;
     width: auto;
     margin-top: 30%;   
+    margin-left: 30%;
 }
 
 .keyHeader {
@@ -73,8 +73,13 @@ p {
     font-family: 'roboto';
     font-weight: 100;
     font-size: 1.2rem;
+    text-align: left !important;
     color: #ffffff;
     overflow: scroll;
+}
+
+#xlm {
+    font-size: 1.5rem;
 }
 
 /* transaction error */
