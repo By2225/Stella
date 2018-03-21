@@ -53,9 +53,9 @@ def get_balance_form():
 @app.route("/get_balance", methods=['POST'])
 def get_balance():
     result = request.form
-    secret_seed = result['secretSeed']
+    accountId = result['accountId']
     resp = requests.post(STELLAR_API_URL + 'getBalance',
-        {'secretSeed': secret_seed})
+        {'accountId': accountId})
 
     data = json.loads(resp.text) # Convert response text to json
     if resp.status_code == 200:
