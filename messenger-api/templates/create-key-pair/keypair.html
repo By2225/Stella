@@ -5,7 +5,7 @@
   <!-- Basic Page Needs
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <meta charset="utf-8">
-  <title> Stella - Transaction Error</title>
+  <title>Stella - New Key Pair </title>
   <meta name="description" content="">
   <meta name="author" content="">
 
@@ -15,49 +15,44 @@
 
   <!-- FONT
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link href="http://fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Baloo" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet">
 
+
+
   <!-- CSS
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet" href="../static/css/normalize.css">
-  <link rel="stylesheet" href="../static/css/skeleton.css">
-  <link rel="stylesheet" href="../static/css/stellaStyle.css">
+  <link rel="stylesheet" href="../../static/css/normalize.css">
+  <link rel="stylesheet" href="../../static/css/skeleton.css">
+  <link rel="stylesheet" href="../../static/css/stellaStyle.css">
 
   <!-- JavaScript
-–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <script src="../../static/js/index.js"></script>
 
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="icon" type="image/png" href="../static/css/images/favicon.png">
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="../static/js/index.js"></script>
-
+  <link rel="icon" type="image/png" href="../../static/css/images/favicon.png">
 
 </head>
-<body class="bg">
+<body class="balanceBG">
 
   <!-- Primary Page Layout
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 
-  <div class="container errorText">
-      <h1>  Transaction Failed </h1>
-      <h4> Status Code: {{ error }} </h4>
-  </div>
-
-  <div class="row">
-      <div class="container">
-          <div class="row">
-              <div class="twelve columns">
-                  <img src="../static/css/images/error.png" style="width: 100%;">
+  <div class="container">
+      <div class="row">
+          <div class="twelve columns">
+              <div class="keyPair">
+                <h2> Account Id</h2>
+                <h6> {{ accountId }}</h6>
+                <h2>Secret Seed </h2>
+                <h6> {{ secretSeed }} </h6>
               </div>
           </div>
       </div>
   </div>
-
 </body>
 
 <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>

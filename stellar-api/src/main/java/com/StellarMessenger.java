@@ -1,10 +1,7 @@
 package com;
-
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.stellar.sdk.*;
 import org.stellar.sdk.requests.AccountsRequestBuilder;
 import org.stellar.sdk.responses.AccountResponse;
@@ -15,24 +12,33 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Scanner;
 
-@CrossOrigin
+// TODO: Encrypt secret seed and remove print statements for sensitive sender_info
 @RestController
 public class StellarMessenger {
 
+    /*
+     @return Api welcome message
+    */
     @RequestMapping("/")
     public String welcome(){
         return "You have successfully connected to the Stellar Facebook Messenger API!";
     }
 
+    /*
+       @return New account id and secret seed key pair
+    */
     @RequestMapping("/createKeyPair")
     public static KeyPair createKeyPair(){
         // Generates seed for creating a key pair
         KeyPair pair = KeyPair.random();
-        System.out.println(pair.getSecretSeed());
-        System.out.println(pair.getAccountId());
         return pair;
     }
 
+    /*
+       Registers new test net account
+       @param accountID Unregistered account id
+       @return Account registration response
+    */
     @RequestMapping("/registerTestNetAccount")
     public static String registerTestNetAccount(@RequestParam(value="accountId") String accountId) throws Exception{
         // Registers account with the TestNet
@@ -41,12 +47,18 @@ public class StellarMessenger {
                 accountId);
         InputStream response = new URL(friendBotUrl).openStream();
         String responseBody = new Scanner(response, "UTF-8").useDelimiter("\\A").next();
-        System.out.println("SUCCESS! You have a new account :)\n" + responseBody);
         return responseBody;
     }
 
+    /*
+       Retrieves balance for Stellar account
+       @param secretSeed Secret seed for Stellar account
+       @return Account balance response
+    */
     @RequestMapping("/getBalance")
     public static String getBalance(@RequestParam(value="secretSeed") String secretSeed) throws IOException {
+        // TODO: Allow user to specify account id instead of secret seed
+        // TODO: Catch IOException
         Server server = new Server("https://horizon-testnet.stellar.org");
         KeyPair pair = KeyPair.fromSecretSeed(secretSeed);
         AccountResponse account = server.accounts().account(pair); // throws IOException
@@ -60,38 +72,44 @@ public class StellarMessenger {
         return resp.toString();
     }
 
+
+    /*
+      Sends Stellar lumens to destination account id
+      @param secretSeed secret seed for sender account
+      @param destAcctId destination account id
+      @param amount amount to send
+      @return Response for transaction submission request
+    */
     @RequestMapping("/send")
     public static SubmitTransactionResponse sendLumens(@RequestParam(value="secretSeed") String secretSeed,
                                   @RequestParam(value="destAcctId") String destAcctId,
                                   @RequestParam(value="amount") String amount) throws Exception {
-
         Server server = new Server("https://horizon-testnet.stellar.org");
         KeyPair source = KeyPair.fromSecretSeed(secretSeed);
         KeyPair destination = KeyPair.fromAccountId(destAcctId);
         Network.useTestNetwork();
-        // Checks if destination account exists
-        // If account does not exist HttpResponseException will be thrown
+
+        // Checks if destination account exists, throws HttpResponseException for
+        // nonexistent account
         server.accounts().account(destination);
-        // Load up to date information about
+
         AccountsRequestBuilder sourceAccountBuilder = server.accounts();
 
-        // Throws HttpResponseException if error
+        // Throws HttpResponseException source account does not exist
         AccountResponse sourceAccount = sourceAccountBuilder.account(source);
 
-        // Build the transaction
         Transaction.Builder transactionBuilder = new Transaction.Builder(sourceAccount);
-        // AssetTypeNative represents the Stellar Lumens Native asset
+
+        // AssetTypeNative is the Stellar Lumens Native asset
         PaymentOperation payment = new PaymentOperation.Builder(
                 destination, new AssetTypeNative(), amount).build();
 
-        // Add metadata to transaction (optional)
-        transactionBuilder.addMemo(Memo.text("Test transaction"));
         Transaction transaction = transactionBuilder.addOperation(payment).build();
-
         transaction.sign(source); // sign transaction with private seed
 
         SubmitTransactionResponse response = null;
-        // And finally, send it off to Stellar!
+
+        // Submit transaction to Stellar
         int count = 0;
         while (count < 5) {
             try {
@@ -103,7 +121,8 @@ public class StellarMessenger {
             } catch (Exception e) {
                 System.out.println("Something went wrong! Retrying...");
                 System.out.println(e.getMessage());
-                // TODO: Check for actual response from Horizon server. Resubmit if no reponse
+                // TODO: Check for actual response from Horizon server.
+                // Resubmit if no reponse
             }
         }
         return response;

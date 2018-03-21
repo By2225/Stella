@@ -6,7 +6,7 @@
     <!-- Basic Page Needs
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
     <meta charset="utf-8">
-    <title> Send Lumens </title>
+    <title> Stella - Send Lumens </title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -20,22 +20,19 @@
     <link href="https://fonts.googleapis.com/css?family=Baloo" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet">
 
-
-
     <!-- CSS
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    <link rel="stylesheet" href="../static/css/normalize.css">
-    <link rel="stylesheet" href="../static/css/skeleton.css">
-    <link rel="stylesheet" href="../static/css/stellaStyle.css">
+    <link rel="stylesheet" href="../../static/css/normalize.css">
+    <link rel="stylesheet" href="../../static/css/skeleton.css">
+    <link rel="stylesheet" href="../../static/css/stellaStyle.css">
+
+    <!-- JavaScript
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <script src="../../static/js/index.js"></script>
 
     <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    <link rel="icon" type="image/png" href="../static/css/images/favicon.png">
-
-    <!-- JavaScript - JQuery & AJAX
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="../static/js/script.js"></script>
+    <link rel="icon" type="image/png" href="../../static/css/images/favicon.png">
 
 </head>
 
@@ -43,39 +40,35 @@
 
     <!-- Primary Page Layout
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-
     <div class="container">
         <div class="row">
             <div class="twelve columns">
-                <img class="logo" src="../static/css/images/Logotype.png">
+                <img class="logo" src="../../static/css/images/Logotype.png">
             </div>
         </div>
     </div>
 
     <div class="container">
-        <form>
+        <form action="https://stella-messenger-api.herokuapp.com/send_lumens" method='POST'>
             <div class="row">
                 <div class="twelve columns">
                     <label for="amount">Who</label>
                     <p>Enter the recipients public address</p>
-                    <input class="u-full-width" name="destAcctId" type="text" placeholder="SB4OFYTPJEOIJ57W2AT9XPVWOA4N6OBJW2KFE5SD344I4K5OC37DZ6Y" id="recipientAddress">
+                    <input class="u-full-width" name="destAcctId" type="text" placeholder="e.g., SB4OFYTPJEOIJ57W2AT9XPVWOA4N6OBJW2KFE5SD344I4K5OC37DZ6Y" required>
                     <label for="amount">Private Key</label>
                     <p>Enter the private key</p>
-                    <input class="u-full-width" name="secretSeed" type="text" placeholder="NDMF2AE4KHAMSD9M662NECJ6WV57W6M5C3IZPC5YPZQBZWSVTTSTBS" id="recipientAddress">
+                    <input class="u-full-width" name="secretSeed" type="password" placeholder="e.g., NDMF2AE4KHAMSD9M662NECJ6WV57W6M5C3IZPC5YPZQBZWSVTTSTBS" required>
                     <label for="amount">Amount</label>
                     <p>Enter the amount you want to send</p>
-                    <input class="u-full-width" name="amount" type="number" placeholder="How much do you want to send?" id="recipientAddress">
+                    <input class="u-full-width" name="amount" type="number" placeholder="How much do you want to send?" required>
                     <!--- submit button --->
-                    <button class="button-stella" style="margin-top: 10%;" type="submit" value="Send Lumens">Send Lumens &nbsp; <img style="width: 4%;"src="../static/css/images/send.png">
-</button>
+                    <button class="button-stella" style="margin-top: 10%;" type="submit" value="Send Lumens"> Send Lumens &nbsp; <img style="width: 4%;"src="../../static/css/images/send.png">
+                    </button>
 
                 </div>
             </div>
         </form>
     </div>
-
-    <!-- End Document
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 </body>
 
 <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
