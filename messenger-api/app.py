@@ -17,14 +17,20 @@ bot = Bot(ACCESS_TOKEN)
 
 @app.route('/', methods=['GET', 'POST'])
 def receive_message():
-    if request.method == 'GET':
-        token_sent = request.args.get('hub.verify_token')
-        return verify_fb_token(token_sent)
+    """Processes Facebook postback messages"""
 
-    output = request.get_json()
-    for event in output['entry']:
+    if request.method == 'GET':
+        # Confirms that messages are sent from Facebook and subscribes webhook to bot
+        token_sent = request.args.get('hub.verify_token')
+        if token_sent == VERIFY_TOKEN:
+            return request.args.get('hub.challenge')
+        return 'Invalid verification token'
+
+    req_json = request.get_json()
+    for event in req_json['entry']:
         messaging = event['messaging']
         for message in messaging:
+            # Forward all Get Started postback messages to user
             if 'postback' in message:
                 postback = message['postback']
                 title = postback['title']
@@ -33,31 +39,29 @@ def receive_message():
                         message['postback']['payload'])
     return 'Message Processed'
 
-def verify_fb_token(token_sent):
-    # take token sent by facebook and verify it matches the verify token you sent
-    # if they match, allow the request, else return an error
-    if token_sent == VERIFY_TOKEN:
-        return request.args.get('hub.challenge')
-    return 'Invalid verification token'
-
-# uses PyMessenger to send response to user
 def send_message(recipient_id, response):
-    # sends user the text message provided via input response parameter
+    """Sends the user a text message
+    Args:
+        recipient_id: Facebook id of message recipient
+        response: Text message to send user
+    """
     bot.send_text_message(recipient_id, response)
     return 'success'
 
 @app.route("/balance_form", methods=['GET', 'POST'])
 def get_balance_form():
+    """Renders the check balance form"""
     return render_template('balance/index.html')
 
 @app.route("/get_balance", methods=['POST'])
 def get_balance():
+    """Fetches the balance of a Stellar account"""
     result = request.form
     accountId = result['accountId']
     resp = requests.post(STELLAR_API_URL + 'getBalance',
         {'accountId': accountId})
 
-    data = json.loads(resp.text) # Convert response text to json
+    data = json.loads(resp.text)
     if resp.status_code == 200:
         balance = data['balance']
         account = data['account']
@@ -68,10 +72,12 @@ def get_balance():
 
 @app.route('/key_pair_form', methods=['GET', 'POST'])
 def key_pair_form():
+    """Renders the create key pair webpage"""
     return render_template('create-key-pair/index.html')
 
 @app.route('/create_key_pair', methods=['GET', 'POST'])
 def create_key_pair():
+    """Creates an account key pair (account id, secret seed)"""
     resp = requests.post(STELLAR_API_URL + 'createKeyPair')
     if resp.status_code == 200:
         data = json.loads(resp.text)
@@ -84,10 +90,12 @@ def create_key_pair():
 
 @app.route('/registration_form', methods=['GET', 'POST'])
 def get_registration_form():
+    """Renders the account registration form"""
     return render_template('register-testnet/index.html')
 
 @app.route("/register_testnet_acct", methods=['POST'])
 def register_testnet():
+    """Registers and funds an account on the Stellar testnet"""
     result = request.form
     accountId = result['accountId']
     resp = requests.post(STELLAR_API_URL + 'registerTestNetAccount',
@@ -99,10 +107,12 @@ def register_testnet():
 
 @app.route('/payment_form', methods=['GET', 'POST'])
 def get_payment_form():
+    """Renders the form for submitting a payment"""
     return render_template('send/index.html')
 
 @app.route('/send_lumens', methods=['POST'])
 def send_lumens():
+    """Sends lumens to destination account"""
     result = request.form
     dest_acct_id = result['destAcctId']
     secret_seed = result['secretSeed']
