@@ -17,3 +17,6 @@ Stella is a Facebook Messenger extension for sending Stellar Lumens. It allows u
 # Award:
 Best Open Source Contribution Project at Columbia University DevFest Hackathon
 Check out our hack [HERE](https://devpost.com/software/stellarapp-hc0jby)
+
+# Using Stella
+The app is currently under review by Facebook and should be publicly available shortly. 
