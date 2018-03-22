@@ -1,11 +1,11 @@
 # Stella
 Stella is a Facebook Messenger extension for sending Stellar Lumens. It allows users to send lumens, check account balances, and create new account key pairs through a Messenger webview.
-  
-# Sketch view: 
-Live Transaction shown below:
+
+# Screenshots
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/28996332/36932074-cc0b4ec2-1e91-11e8-9e97-3b19639cce2e.JPG">
-  <img src="https://user-images.githubusercontent.com/28996332/36932073-cbffe3a2-1e91-11e8-9d26-ef75a9aca66e.JPG">
+  <img src="screenshots/get_started.jpg">
+  <img src="screenshots/send_lumens.jpg">
+  <img src="screenshots/get_balance.jpg">
 </p>
  
 # Future of Stella:
