@@ -4,7 +4,7 @@ Stella is a Facebook Messenger extension for sending Stellar Lumens. It allows u
 # Screenshots
 <p align="center">
   <img src="screenshots/get_started.jpg">
-  <img src="screenshots/send_lumens.jpg">
+  <img src="screenshots/payment_form.jpg">
   <img src="screenshots/get_balance.jpg">
 </p>
  
