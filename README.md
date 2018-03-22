@@ -49,8 +49,6 @@ The application is built using two web microservices:
 * Secure private keys using encryption
 * Link public account ids to Facebook profile pseudonyms
 * Deploy app on Stellar main-net
-* Develop more robust text message parser
-* Better integrate Python and Java microservices
 * Send output message to receiver for payment confirmation
 * Feature for displaying recent transaction history
 
