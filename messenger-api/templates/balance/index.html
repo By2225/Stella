@@ -6,7 +6,7 @@
     <!-- Basic Page Needs
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
     <meta charset="utf-8">
-    <title> Send Lumens </title>
+    <title> Stella - Get Balance </title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -21,21 +21,19 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet">
 
 
-
     <!-- CSS
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    <link rel="stylesheet" href="../static/css/normalize.css">
-    <link rel="stylesheet" href="../static/css/skeleton.css">
-    <link rel="stylesheet" href="../static/css/stellaStyle.css">
+    <link rel="stylesheet" href="../../static/css/normalize.css">
+    <link rel="stylesheet" href="../../static/css/skeleton.css">
+    <link rel="stylesheet" href="../../static/css/stellaStyle.css">
 
     <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    <link rel="icon" type="image/png" href="../static/css/images/favicon.png">
+    <link rel="icon" type="image/png" href="../../static/css/images/favicon.png">
 
-    <!-- JavaScript - JQuery & AJAX
+    <!-- JavaScript
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="../static/js/script.js"></script>
+    <script src="../../static/js/index.js"></script>
 
 </head>
 
@@ -43,31 +41,26 @@
 
     <!-- Primary Page Layout
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-
     <div class="container">
         <div class="row">
             <div class="twelve columns">
-                <img class="logo" src="../static/css/images/Logotype.png">
+                <img class="logo" src="../../static/css/images/Logotype.png">
             </div>
         </div>
     </div>
 
     <div class="container">
-        <form>
+        <form action="https://stella-messenger-api.herokuapp.com/get_balance" method='POST'>
             <div class="row">
                 <div class="twelve columns">
-                    <label for="amount">Who</label>
-                    <p>Enter the recipients public address</p>
-                    <input class="u-full-width" name="destAcctId" type="text" placeholder="SB4OFYTPJEOIJ57W2AT9XPVWOA4N6OBJW2KFE5SD344I4K5OC37DZ6Y" id="recipientAddress">
-                    <label for="amount">Private Key</label>
-                    <p>Enter the private key</p>
-                    <input class="u-full-width" name="secretSeed" type="text" placeholder="NDMF2AE4KHAMSD9M662NECJ6WV57W6M5C3IZPC5YPZQBZWSVTTSTBS" id="recipientAddress">
-                    <label for="amount">Amount</label>
-                    <p>Enter the amount you want to send</p>
-                    <input class="u-full-width" name="amount" type="number" placeholder="How much do you want to send?" id="recipientAddress">
+                    <!-- Modify to user the account id rather than secret seed -->
+                    <!-- Mark all fields as required -->
+                    <label for="amount"> Account Id </label>
+                    <p> Enter an account Id </p>
+                    <input class="u-full-width" name="accountId" type="text" placeholder="e.g., SB4OFYTPJEOIJ57W2AT9XPVWOA4N6OBJW2KFE5SD344I4K5OC37DZ6Y" required>
                     <!--- submit button --->
-                    <button class="button-stella" style="margin-top: 10%;" type="submit" value="Send Lumens">Send Lumens &nbsp; <img style="width: 4%;"src="../static/css/images/send.png">
-</button>
+                    <button class="button-stella" style="margin-top: 10%;" type="submit" value="Get Balance"> Get Balance &nbsp; <img style="width: 4%;"src="../../static/css/images/send.png">
+                    </button>
 
                 </div>
             </div>

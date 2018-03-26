@@ -1,3 +1,7 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+import json
 import random
 import requests
 import os
@@ -8,99 +12,119 @@ app = Flask(__name__)
 
 ACCESS_TOKEN = os.environ['ACCESS_TOKEN']
 VERIFY_TOKEN = os.environ['VERIFY_TOKEN']
-STELLAR_API_URL = "https://stellarapi.herokuapp.com/"
+STELLAR_API_URL = 'https://stellarapi.herokuapp.com/'
 bot = Bot(ACCESS_TOKEN)
 
-# We will receive messages that Facebook sends Stella at this endpoint
-@app.route("/", methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def receive_message():
+    """Processes Facebook postback messages"""
+
     if request.method == 'GET':
-        """Before allowing people to message Stella, Facebook has implemented a verify token
-        that confirms all requests that Stella receives came from Facebook."""
-        token_sent = request.args.get("hub.verify_token")
-        return verify_fb_token(token_sent)
+        # Confirms that messages are sent from Facebook and subscribes webhook to bot
+        token_sent = request.args.get('hub.verify_token')
+        if token_sent == VERIFY_TOKEN:
+            return request.args.get('hub.challenge')
+        return 'Invalid verification token'
 
-    #if the request was not get, it must be POST and we can just proceed with sending a message back to user
-    else:
-       output = request.get_json()
-       for event in output['entry']:
-          messaging = event['messaging']
-          for message in messaging:
-            if message.get('message'):
-                #Facebook Messenger ID for user so Stella knows where to send response back to
-                recipient_id = message['sender']['id']
-                message_text = message['message'].get('text')
-                if message_text:
-                    """Split parts of the message into tokens.
+    req_json = request.get_json()
+    for event in req_json['entry']:
+        messaging = event['messaging']
+        for message in messaging:
+            # Forward all Get Started postback messages to user
+            if 'postback' in message:
+                postback = message['postback']
+                title = postback['title']
+                if title == 'Get Started':
+                    send_message(message['sender']['id'],
+                        message['postback']['payload'])
+    return 'Message Processed'
 
-                    tokens 0 - 'Send'
-                    tokens 1 - Public key of receipient
-                    tokens 2 - Amount of XLM to send
-                    tokens 3 - Private key of sender
-                    """
-                    tokens = message_text.split(" ")
-                    if (tokens[0].upper() == "SEND"):
-                        # Check if correct number of items has been specified
-                        payment_resp = send_payment(tokens)
-                        response_sent_text = sent_message(tokens[2], tokens[3])
-                        remaining_balance = get_balance(tokens[3])
-                        send_message(recipient_id, response_sent_text)
-                    else:
-                        sender_info = parse_sent_message(message_text)
-                        if sender_info:
-                            response_sent_text = "My name is Stella. I can help you send Stellar Lumens. " \
-                                                 "Please specify the keyword SEND, an amount, recipient, " \
-                                                 "and source address."
-                            send_message(recipient_id, response_sent_text)
-                #if user sends Stella a GIF, photo,video, or any other non-text item
-                if message['message'].get('attachments'):
-                    response_sent_nontext = get_invalid_message()
-                    send_message(recipient_id, response_sent_nontext)
-    return "Message Processed"
-
-def verify_fb_token(token_sent):
-    #take token sent by facebook and verify it matches the verify token you sent
-    #if they match, allow the request, else return an error
-    if token_sent == VERIFY_TOKEN:
-        return request.args.get("hub.challenge")
-    return 'Invalid verification token'
-
-def sent_message(amount, name):
-    return "Success! You just sent {} XLM to {}".format(amount, name)
-
-def parse_sent_message(tokens):
-    if (len(tokens) < 3):
-        return
-    accountId = tokens[1]
-    amount = tokens[2]
-    return (accountId, amount,)
-
-#if the user sends something other than a text message
-def get_invalid_message():
-    return "Invalid message. Please only send lumens"
-
-#uses PyMessenger to send response to user
 def send_message(recipient_id, response):
-    #sends user the text message provided via input response parameter
+    """Sends the user a text message
+    Args:
+        recipient_id: Facebook id of message recipient
+        response: Text message to send user
+    """
     bot.send_text_message(recipient_id, response)
-    return "success"
+    return 'success'
 
-def get_balance(secretSeed):
-    req = requests.post(STELLAR_API_URL + "getBalance", {"secretSeed": secretSeed })
-    return req.text
+@app.route("/balance_form", methods=['GET', 'POST'])
+def get_balance_form():
+    """Renders the check balance form"""
+    return render_template('balance/index.html')
 
-@app.route("/send_lumens", methods=['GET', 'POST'])
+@app.route("/get_balance", methods=['POST'])
+def get_balance():
+    """Fetches the balance of a Stellar account"""
+    result = request.form
+    accountId = result['accountId']
+    resp = requests.post(STELLAR_API_URL + 'getBalance',
+        {'accountId': accountId})
+
+    data = json.loads(resp.text)
+    if resp.status_code == 200:
+        balance = data['balance']
+        account = data['account']
+        return render_template('balance/balance.html',
+            balance=balance, account=account)
+    else:
+        return render_template('error.html', error=resp.status_code)
+
+@app.route('/key_pair_form', methods=['GET', 'POST'])
+def key_pair_form():
+    """Renders the create key pair webpage"""
+    return render_template('create-key-pair/index.html')
+
+@app.route('/create_key_pair', methods=['GET', 'POST'])
+def create_key_pair():
+    """Creates an account key pair (account id, secret seed)"""
+    resp = requests.post(STELLAR_API_URL + 'createKeyPair')
+    if resp.status_code == 200:
+        data = json.loads(resp.text)
+        secretSeed = data['secretSeed']
+        accountId = data['accountId']
+        return render_template('create-key-pair/keypair.html',
+            accountId=accountId, secretSeed=secretSeed)
+    else:
+        return render_template('error.html', error=resp.status_code)
+
+@app.route('/registration_form', methods=['GET', 'POST'])
+def get_registration_form():
+    """Renders the account registration form"""
+    return render_template('register-testnet/index.html')
+
+@app.route("/register_testnet_acct", methods=['POST'])
+def register_testnet():
+    """Registers and funds an account on the Stellar testnet"""
+    result = request.form
+    accountId = result['accountId']
+    resp = requests.post(STELLAR_API_URL + 'registerTestNetAccount',
+                         {'accountId': accountId})
+    if resp.status_code == 200:
+        return render_template('register-testnet/registration.html')
+    else:
+        return render_template('error.html', error=resp.status_code)
+
+@app.route('/payment_form', methods=['GET', 'POST'])
+def get_payment_form():
+    """Renders the form for submitting a payment"""
+    return render_template('send/index.html')
+
+@app.route('/send_lumens', methods=['POST'])
 def send_lumens():
-    return render_template('index.html')
+    """Sends lumens to destination account"""
+    result = request.form
+    dest_acct_id = result['destAcctId']
+    secret_seed = result['secretSeed']
+    amount = result['amount']
+    resp = requests.post(STELLAR_API_URL + 'send',
+                         {'secretSeed': secret_seed,'destAcctId': dest_acct_id,
+                            'amount': amount})
+    if resp.status_code == 200:
+        return render_template('send/sent.html',
+            destAcctId=dest_acct_id, secretSeed=secret_seed, amount=amount)
+    else:
+        return render_template('error.html', error=resp.status_code)
 
-def send_payment(tokens):
-    if (len(tokens) < 4):
-        return "Invalid payment request - not enough arguments"
-    dest_acct_id = tokens[1]
-    amount = tokens[2]
-    secret_seed = tokens[3]
-    req = requests.post(STELLAR_API_URL+ "send", {"secretSeed": secret_seed, "destAcctId": dest_acct_id, "amount": amount })
-    return req.text
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run()

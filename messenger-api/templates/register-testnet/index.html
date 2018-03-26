@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta charset="utf-8">
+    <title> Stella - Register Testnet Account </title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Baloo" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet">
+
+    <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="../../static/css/normalize.css">
+    <link rel="stylesheet" href="../../static/css/skeleton.css">
+    <link rel="stylesheet" href="../../static/css/stellaStyle.css">
+
+    <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="icon" type="image/png" href="../../static/css/images/favicon.png">
+
+    <!-- JavaScript
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <script src="../../static/js/index.js"></script>
+
+</head>
+
+<body class="bg">
+
+    <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <div class="container">
+        <div class="row">
+            <div class="twelve columns">
+                <img class="logo" src="../../static/css/images/Logotype.png">
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <form action="https://stella-messenger-api.herokuapp.com/register_testnet_acct" method='POST'>
+            <div class="row">
+                <div class="twelve columns">
+                    <!-- Modify to user the account id rather than secret seed -->
+                    <label for="amount"> Account ID </label>
+                    <p> Enter the testnet account id </p>
+                    <input class="u-full-width" name="accountId" type="text" placeholder="e.g., SB4OFYTPJEOIJ57W2AT9XPVWOA4N6OBJW2KFE5SD344I4K5OC37DZ6Y" required>
+                    <!--- submit button --->
+                    <button class="button-stella" style="margin-top: 10%;" type="submit" value="Register Account">Register Account &nbsp; <img style="width: 4%;"src="../../static/css/images/send.png">
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</body>
+
+<script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+</html>

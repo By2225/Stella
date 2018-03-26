@@ -5,7 +5,7 @@
   <!-- Basic Page Needs
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <meta charset="utf-8">
-  <title>Stella - Account Balance </title>
+  <title> Stella - Account Balance </title>
   <meta name="description" content="">
   <meta name="author" content="">
 
@@ -15,7 +15,7 @@
 
   <!-- FONT
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Baloo" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet">
 
@@ -23,44 +23,37 @@
 
   <!-- CSS
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet" href="../static/css/normalize.css">
-  <link rel="stylesheet" href="../static/css/skeleton.css">
-  <link rel="stylesheet" href="../static/css/stellaStyle.css">
+  <link rel="stylesheet" href="../../static/css/normalize.css">
+  <link rel="stylesheet" href="../../static/css/skeleton.css">
+  <link rel="stylesheet" href="../../static/css/stellaStyle.css">
+
+  <!-- JavaScript
+–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <script src="../../static/js/index.js"></script>
 
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="icon" type="image/png" href="images/favicon.png">
+  <link rel="icon" type="image/png" href="../../static/css/images/favicon.png">
 
 </head>
 <body class="balanceBG">
 
   <!-- Primary Page Layout
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  
+
   <div class="container">
       <div class="row">
           <div class="twelve columns">
               <div class="accountBalance">
-                  <h1 id="accountBalance">42&nbsp;<span id="xlm">XLM</span></h1>
-                  <p>Current balance</p>
-              </div>
-          </div>
-      </div>
-  </div>
-  
-  <div class="row keyBG">
-      <div class="container">
-          <div class="row">
-              <div class="twelve columns">
-                  <h6 class="keyHeader">Public Key</h6><p class="keyText" id="publicKey">GABMJ24U573QZCTRXCDVV5MDPW56QNDZTIBO3LY7LYB3SXCPNSCGKWY2</p>
-                  <h6 class="keyHeader">Private Key</h6><p class="keyText" id="privateKey">GABMJ24U573QZCTRXCDVV5MDPW56QNDZTIBO3LY7LYB3SXCPNSCGKWY2</p>
+                <h2> Account Id </h2>
+                <h6> {{ account }} </h6>
+                <h2> Current balance </h2>
+                <h4> {{ balance }} XLM </h4>
               </div>
           </div>
       </div>
   </div>
 
-<!-- End Document
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 </body>
 
 <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
